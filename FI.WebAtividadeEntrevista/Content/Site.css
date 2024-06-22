@@ -8,3 +8,6 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+.error{
+    color:red !important;
+}

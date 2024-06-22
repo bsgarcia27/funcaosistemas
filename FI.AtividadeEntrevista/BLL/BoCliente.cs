@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FI.AtividadeEntrevista.BLL.UTILS;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,8 +15,24 @@ namespace FI.AtividadeEntrevista.BLL
         /// <param name="cliente">Objeto de cliente</param>
         public long Incluir(DML.Cliente cliente)
         {
+            //validarcpf
+            long id = 0;
             DAL.DaoCliente cli = new DAL.DaoCliente();
-            return cli.Incluir(cliente);
+
+            cliente.CPF = CPFValidator.Validate(cliente.CPF);
+
+            if(cliente.CPF == "")
+            {
+                id = -1;
+            }
+            else 
+            { 
+                if (!VerificarExistencia(cliente.CPF))
+                {
+                    id =  cli.Incluir(cliente);
+                }
+            }
+            return id;
         }
 
         /// <summary>
