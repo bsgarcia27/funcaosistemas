@@ -124,6 +124,7 @@ namespace FI.AtividadeEntrevista.DAL
             parametros.Add(new System.Data.SqlClient.SqlParameter("CPF", cliente.CPF));
 
             base.Executar("FI_SP_AltCliente", parametros);
+
         }
 
 

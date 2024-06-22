@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,10 +40,22 @@ namespace FI.AtividadeEntrevista.BLL
         /// Altera um cliente
         /// </summary>
         /// <param name="cliente">Objeto de cliente</param>
-        public void Alterar(DML.Cliente cliente)
+        public long Alterar(DML.Cliente cliente)
         {
+            long id = 0;
             DAL.DaoCliente cli = new DAL.DaoCliente();
-            cli.Alterar(cliente);
+            cliente.CPF = CPFValidator.Validate(cliente.CPF);
+
+            if (cliente.CPF == "")
+            {
+                id = -1;
+            }
+            else
+            {
+                cli.Alterar(cliente);
+                id = 2;
+            }
+            return id;
         }
 
         /// <summary>

@@ -59,6 +59,7 @@ namespace WebAtividadeEntrevista.Controllers
                     CPF =  model.CPF
 
                 });
+
                 switch (model.Id)
                 {
                     case 0:
@@ -73,9 +74,7 @@ namespace WebAtividadeEntrevista.Controllers
                         mensagem = "Cliente cadastrado com sucesso";
                         titulo = "Cadastrado com Sucesso";
                         break;
-                
                 }
-
                 return Json(new { Result = titulo, Message = mensagem });
 
             }
@@ -87,7 +86,8 @@ namespace WebAtividadeEntrevista.Controllers
         public JsonResult Alterar(ClienteModel model)
         {
             BoCliente bo = new BoCliente();
-       
+            string mensagem, titulo = "";
+
             if (!this.ModelState.IsValid)
             {
                 List<string> erros = (from item in ModelState.Values
@@ -99,7 +99,7 @@ namespace WebAtividadeEntrevista.Controllers
             }
             else
             {
-                bo.Alterar(new Cliente()
+                model.Id = bo.Alterar(new Cliente()
                 {
                     Id = model.Id,
                     CEP = model.CEP,
@@ -113,8 +113,17 @@ namespace WebAtividadeEntrevista.Controllers
                     Telefone = model.Telefone,
                     CPF = model.CPF
                 });
-                
-                return Json(new { Result = "Sucesso!", Message = "Cadastro alterado com sucesso" });
+                if (model.Id == -1) 
+                {
+                    mensagem = "CPF Inválido, Houve um problema ao alterar esse número de CPF";
+                    titulo = "ERRO! Problema ao alterar";
+                }
+                else
+                {
+                    mensagem = "O cadastro foi alterado com sucesso";
+                    titulo = "Alterado com Sucesso";
+                }
+                return Json(new { Result = titulo, Message = mensagem });
             }
         }
 
