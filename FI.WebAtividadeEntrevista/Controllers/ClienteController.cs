@@ -70,9 +70,9 @@ namespace WebAtividadeEntrevista.Controllers
                         titulo = "ERRO! Problema ao cadastrar";
                         break;
                     default:
-                        mensagem = "CPF Cadastrado com Sucesso";
-                        titulo = "Cadastrado com Sucesso!";
-                        return Json(mensagem);
+                        mensagem = "Cliente cadastrado com sucesso";
+                        titulo = "Cadastrado com Sucesso";
+                        break;
                 
                 }
 

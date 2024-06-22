@@ -68,7 +68,7 @@ $(document).ready(function () {
             success:
                 function (r) {
                     ModalDialog(r.Result, r.Message)
-                    if ("Cadastrado com Sucesso!" == r.Result) {
+                    if ("Cadastrado com Sucesso" == r.Result) {
                         $("#formCadastro")[0].reset();
                     }
                 }
