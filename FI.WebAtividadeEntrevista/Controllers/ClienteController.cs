@@ -30,6 +30,7 @@ namespace WebAtividadeEntrevista.Controllers
         public JsonResult Incluir(ClienteModel model)
         {
             BoCliente bo = new BoCliente();
+            BoBeneficiario boBenef = new BoBeneficiario();
             string mensagem,titulo = "";
             
             
@@ -59,6 +60,19 @@ namespace WebAtividadeEntrevista.Controllers
                     CPF =  model.CPF
 
                 });
+
+                if( model.Id > 0)
+                {
+                    foreach (var x in model.Beneficiarios)
+                    {
+                        boBenef.Incluir(new Beneficiario()
+                        {
+                            idCliente = model.Id,
+                            CPF = x.cpf,
+                            Nome = x.nome
+                        }); 
+                    }
+                }
 
                 switch (model.Id)
                 {

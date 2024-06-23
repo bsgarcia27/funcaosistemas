@@ -30,17 +30,23 @@
 
 $(document).ready(function () {
 
-    $('#CPF').mask('000.000.000-00');
 
-    $('#formCadastro').validate({
+    let usuarios = [];
+    let editIndex = -1; 
+
+    $('#CPF').mask('000.000.000-00');
+    $('#BCPF').mask('000.000.000-00');
+
+     var validate = $('#formCadastro').validate({
         rules: {
-            CPF: { CPF: true, required: true }
+            CPF: { CPF: true, required: true },
+            BCPF: { CPF: true, required: true }
         },
         messages: {
-            CPF: { CPF: 'CPF inválido' }
+            
         },
-
     });
+
     $('#formCadastro').submit(function (e) {
         e.preventDefault();
         $.ajax({
@@ -56,7 +62,9 @@ $(document).ready(function () {
                 "Cidade": $(this).find("#Cidade").val(),
                 "Logradouro": $(this).find("#Logradouro").val(),
                 "Telefone": $(this).find("#Telefone").val(),
-                "CPF": $(this).find("#CPF").val()
+                "CPF": $(this).find("#CPF").val(),
+                "Beneficiarios": usuarios
+
             },
             error:
                 function (r) {
@@ -74,6 +82,64 @@ $(document).ready(function () {
                 }
         });
     });
+
+    
+
+    function renderLista() {
+        $('#listaUsuarios').empty();
+        usuarios.forEach((usuario, index) => {
+            $('#listaUsuarios').append(`
+                        <tr>
+                            <td class="col-md-3">${usuario.cpf}</td>
+                            <td class="col-md-6">${usuario.nome}</td>
+                            <td class="col-md-3">
+                               <button class="btn btn-sm btn-primary" onclick="editarUsuario(${index})">Alterar</button>
+                               <button class="btn btn-sm btn-primary" onclick="removerUsuario(${index})">Excluir</button>
+                            </td>
+                        </tr>
+                    `);
+        });
+    }
+
+    $('#incluirBeneficiarios').click(function () {
+        const nome = $('#BNome').val();
+        const cpf = $('#BCPF').val();
+
+        if (!$("#BCPF").valid() || !$("#BNome").valid()){
+            
+            return;
+        }
+        if (usuarios.some(user => user.cpf === cpf) ) {
+            alert('Dependente com este CPF já foi adicionado.');
+            return;
+        }
+
+
+        if (editIndex === -1) {
+            usuarios.push({ nome, cpf });
+        } else {
+            usuarios[editIndex] = { nome, cpf };
+            editIndex = -1;
+        }
+
+        $('#BNome').val('');
+        $('#BCPF').val('');
+        renderLista();
+    });
+
+    window.editarUsuario = function (index) {
+        const usuario = usuarios[index];
+        $('#BNome').val(usuario.nome);
+        $('#BCPF').val(usuario.cpf);
+        editIndex = index;
+        $('#cadastroModal').modal('show');
+    }
+
+    window.removerUsuario = function (index) {
+        usuarios.splice(index, 1);
+        renderLista();
+    }
+
 })
 
 function ModalDialog(titulo, texto) {
@@ -99,3 +165,5 @@ function ModalDialog(titulo, texto) {
     $('body').append(texto);
     $('#' + random).modal('show');
 }
+
+

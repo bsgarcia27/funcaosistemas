@@ -73,6 +73,7 @@ namespace WebAtividadeEntrevista.Models
         /// 
         //[RegularExpression(@"[^a-zA-Z0-9\s]", ErrorMessage = "Digite um CPF válido")]
         public string CPF { get; set; }
+        public List<BeneficiarioModel> Beneficiarios { get; set; }
 
     }    
 }
